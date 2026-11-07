@@ -17,7 +17,9 @@ const t = dict(locale);
 const prefix = localeInfo(locale).prefix;
 const path = Astro.url.pathname.replace(/^\/+|\/+$/g, '');
 const pageKey = (prefix && path.startsWith(prefix) ? path.slice(prefix.length) : path).replace(/^\/+/, '').replace(/\//g, '-') || 'home';
-const campaign = `web-${pageKey}-${locale}`;
+// App Store campaign tokens are capped at 40 characters, so keep them short and unambiguous.
+const LOCALE_CODE: Record<Locale, string> = { en: 'en', ja: 'ja', ko: 'ko', 'zh-hant': 'tw', 'zh-hans': 'cn' };
+const campaign = `web-${pageKey.replace(/^guides(-|$)/, 'g$1')}-${LOCALE_CODE[locale]}`;
 ---
 
 <div class="store">

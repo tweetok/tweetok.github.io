@@ -39,7 +39,7 @@ export const APP_STORE_ID = '6755531352';
  * App Store Connect campaign provider token (App Analytics > Acquisition > Campaigns > Generate campaign link, the `pt=` value).
  * Empty means App Store links are sent without campaign parameters.
  */
-export const APP_STORE_PROVIDER_TOKEN = '';
+export const APP_STORE_PROVIDER_TOKEN = '128489940';
 
 /**
  * App Store link tagged with a campaign token (`ct`, max 40 characters), so App Store Connect can show
