@@ -1,0 +1,126 @@
+<p>TweeTok (the "app") is an independently developed third-party media viewer for iOS, tvOS and Android. On Google Play, the app is published by the developer yuanming. This policy explains what information the app collects, why, where it is stored, and how you can control it.</p>
+
+<div class="note"><p><strong>In brief:</strong> your X credentials stay on your own device and are not uploaded to us. Usage analytics is sent to PostHog under a random ID generated on your device, and includes the IDs of posts you view or act on and of their authors. Cloud sync is optional and sends data only to a WebDAV server you choose. See section 2.</p></div>
+
+<h2>1. What the app does not do</h2>
+<ul>
+  <li>It does not store your X password. Sign-in happens on X's own web page.</li>
+  <li>It does not operate any server that stores your content or X credentials.</li>
+  <li>It does not sell, rent or trade any personal data.</li>
+  <li>It contains no advertising SDKs, shows no ads, does not use the advertising ID, and performs no cross-app or cross-site advertising tracking.</li>
+  <li>It does not read your contacts, calendar, photo library or health data, and does not use your device's GPS location.</li>
+</ul>
+
+<h2>2. What the app collects</h2>
+
+<h3>2.1 X credentials (device only)</h3>
+<p>After you sign in through X's official login page inside the app, the app retains the session credentials returned by X (<code>auth_token</code>, <code>ct0</code>, <code>twid</code>) in order to access X on your behalf.</p>
+<ul>
+  <li><strong>Where:</strong> on iOS, the system Keychain. On Android, the app's private storage, encrypted with Android Keystore and excluded from system backup and device transfer.</li>
+  <li><strong>Sent to:</strong> X's own servers only, to load content and carry out your actions. They are never sent to us or to our analytics provider.</li>
+  <li><strong>Exception (iOS only):</strong> if you choose to use "Pair with Apple TV", the credentials are transferred directly between your two devices over your local network.</li>
+</ul>
+
+<h3>2.2 Content sent to X</h3>
+<p>Replies and quotes you write, and actions such as likes, bookmarks, reposts and blocks, are sent directly to X and are governed by X's terms and privacy policy. We do not store this content.</p>
+
+<h3>2.3 Usage analytics (sent to PostHog)</h3>
+<p>The app uses <a href="https://posthog.com/privacy" target="_blank" rel="noopener">PostHog</a> to analyse feature usage. Data is sent to its servers in the United States (<code>us.i.posthog.com</code>). The app currently has no setting to turn analytics off.</p>
+<p>Users are distinguished by an ID generated randomly on your device. The mapping from X account to that ID stays on your device. We do not send your X username or password as analytics data. However, events include post IDs and author IDs. From build 104, the Android app removes your own X ID from events; earlier Android builds and the iOS app may send your own X ID when you view your own posts or profile. Combined with public information on X, these records could in theory be used to infer identity, so we do not describe this data as fully anonymous. What is reported:</p>
+
+<div class="tablewrap"><table>
+<thead><tr><th>Category</th><th>Details</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>Identifier</td><td>A random ID generated on your device</td><td>Distinguish usage between users</td></tr>
+<tr><td>Browsing behaviour</td><td>IDs of posts you view, author IDs, the timeline, whether the post has media</td><td>Understand how content is browsed and improve the experience</td></tr>
+<tr><td>Interaction events</td><td>Likes, bookmarks, reposts, replies, translations, caching, search (iOS), timeline switches, entering fullscreen and similar actions</td><td>Understand feature adoption</td></tr>
+<tr><td>Purchase events</td><td>Opening the purchase screen, starting, completing or failing a purchase, restoring a purchase</td><td>Check that purchasing works. No payment details</td></tr>
+<tr><td>Reports and blocks</td><td>Reported post ID, author ID and reason; blocked account ID</td><td>So that we receive and can act on reports</td></tr>
+<tr><td>Outbound links</td><td>The <strong>domain</strong> of any external link you open (never the path or query string)</td><td>Diagnose link-opening failures</td></tr>
+<tr><td>Diagnostics</td><td>Reasons for sign-in or sync failures; the type of sync service and whether it is encrypted (not the server address or account)</td><td>Troubleshooting</td></tr>
+<tr><td>Device and app info</td><td>Device model, OS version, app version, language, time zone, launch and foreground/background events</td><td>Compatibility and stability</td></tr>
+<tr><td>Approximate location</td><td>PostHog may infer an approximate location from the IP address of the request</td><td>Understand where the app is used</td></tr>
+</tbody>
+</table></div>
+
+<div class="note"><p><strong>Not sent to analytics:</strong> your credentials and password, post text, the text of your replies, full URLs of external links, your WebDAV address and password, and payment details.</p></div>
+
+<h3>2.4 Purchases</h3>
+<p>TweeTok Pro is a one-time purchase. Payment is handled by Google Play or the App Store, and we never receive your card or other payment details. The app only reads the purchase status from the platform to unlock features. Purchases on the two platforms are separate.</p>
+
+<h3>2.5 Cloud sync (optional, using your own server)</h3>
+<p>If you turn on cloud sync, the app sends your library (cached posts and media), read history and related settings to <strong>the WebDAV server you enter</strong>. We do not operate that server and cannot access this data, which is governed by the terms of that server's provider.</p>
+<ul>
+  <li>Your WebDAV address and password are stored only on your device.</li>
+  <li>If you enter an unencrypted <code>http</code> address, others on the same network may be able to see this data. The app warns you about this.</li>
+  <li>Disconnecting leaves the cloud files in place for you to delete on your own server. You can also choose in the app to delete an item from all devices.</li>
+</ul>
+
+<h3>2.6 Local data on your device</h3>
+<p>The following is stored on your device, and we cannot access it. If you turn on cloud sync, your library, read history and related settings are sent to your server. If you have Android device backup turned on, app data other than sign-in credentials may be included in the backup:</p>
+<ul>
+  <li>Posts, images, videos and posters you cache for offline use</li>
+  <li>Temporary image and video caches</li>
+  <li>Read history, timeline preferences, filter settings, and report and block records</li>
+  <li>Your list of signed-in accounts</li>
+</ul>
+<p>On iOS these files can be viewed in the Files app under "On My iPhone → TweeTok". On Android they can be exported from the app to the "Download/TweeTok" folder.</p>
+
+<h3>2.7 Demo account</h3>
+<p>The app's "demo account" option is only for app review and demonstrations. When used, the demo credentials you enter are sent to our sign-in service (<code>tweetok-demo.wym572.workers.dev</code>, running on Cloudflare) in exchange for a session. Regular users do not need it.</p>
+
+<h2>3. System permissions</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Platform</th><th>Permission</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>Android</td><td>Network access and network state</td><td>Load content and check connectivity</td></tr>
+<tr><td>Android</td><td>Google Play billing</td><td>Purchase TweeTok Pro</td></tr>
+<tr><td>Android</td><td>Boot completed, wake lock</td><td>Used by the scheduler for background tasks (cloud sync)</td></tr>
+<tr><td>iOS</td><td>Photo Library (add only)</td><td>Writes only when you tap Save; never reads your library</td></tr>
+<tr><td>iOS</td><td>Camera</td><td>Only to scan the Apple TV pairing QR code; no image is stored or uploaded</td></tr>
+<tr><td>iOS</td><td>Local Network</td><td>Transfer your session to a paired Apple TV and reach a WebDAV server on your local network</td></tr>
+</tbody>
+</table></div>
+
+<h2>4. Third-party services</h2>
+<div class="tablewrap"><table>
+<thead><tr><th>Service</th><th>Role</th><th>Privacy policy</th></tr></thead>
+<tbody>
+<tr><td>X (X Corp.)</td><td>The source of all content shown in the app. Your relationship with X is governed by X's own terms and privacy policy.</td><td><a href="https://x.com/en/privacy" target="_blank" rel="noopener">x.com/en/privacy</a></td></tr>
+<tr><td>PostHog</td><td>Product usage analytics (see section 2.3). A service provider processing data on our behalf.</td><td><a href="https://posthog.com/privacy" target="_blank" rel="noopener">posthog.com/privacy</a></td></tr>
+<tr><td>Google Play / App Store</td><td>App distribution and payment processing</td><td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google</a> / <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple</a></td></tr>
+<tr><td>Your chosen WebDAV service</td><td>Optional cloud sync (see section 2.5)</td><td>As set by the provider you choose</td></tr>
+</tbody>
+</table></div>
+<p>The app integrates no ad networks and no data brokers. Beyond the above, we do not share your data with third parties.</p>
+
+<h2>5. International transfer and retention</h2>
+<ul>
+  <li>Analytics data is stored on PostHog servers in the <strong>United States</strong>. If you are elsewhere, this constitutes an international transfer.</li>
+  <li>Retention of analytics data follows PostHog's default policy.</li>
+  <li>Local data is removed when you delete the app. Synced data stays on your own server.</li>
+</ul>
+
+<h2>6. Your rights and controls</h2>
+<ul>
+  <li><strong>Delete credentials:</strong> sign out in the app; the credentials on your device are cleared immediately.</li>
+  <li><strong>Clear local data:</strong> Settings offers "Clear Image Cache" and "Clear Read History"; cached posts can be deleted individually or all at once from the cache list.</li>
+  <li><strong>Break the analytics link:</strong> signing out clears that account's random analytics ID on your device. Signing in again generates a new ID, and earlier records no longer correspond to the ID on your device.</li>
+  <li><strong>About deletion requests:</strong> analytics records are stored only under the random ID, which the app does not display, so we currently cannot find and delete specific records based on your identity. You are welcome to write to us with questions.</li>
+  <li><strong>About your X account:</strong> the app does not create accounts. To delete your X account or data on X, please do so on X.</li>
+  <li>The law where you live (such as the GDPR or CCPA) may give you other rights. Contact us to exercise them. We never sell personal information.</li>
+</ul>
+
+<h2>7. Children</h2>
+<p>The app displays user-generated content from X that we do not review in advance. It may include material unsuitable for minors and is not directed at them. On Google Play its target audience is 18 and over; its App Store rating is 17+. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us and we will delete it. See our <a href="/child-safety/">child safety standards</a>.</p>
+
+<h2>8. Relationship with X Corp.</h2>
+<p>TweeTok is an independently developed third-party viewer. It is <strong>not affiliated with</strong>, endorsed by, sponsored by or authorised by X Corp. "X" and related marks are trademarks of X Corp. You need your own X account to use the app. All content shown originates from X and remains the property of its respective authors.</p>
+
+<h2>9. Changes to this policy</h2>
+<p>If this policy changes we will update the effective date at the top of this page. Material changes to how data is processed will be announced prominently within the app.</p>
+
+<h2>10. Contact</h2>
+<p>For questions about this policy, contact:<br>
+<a href="mailto:wym572@gmail.com">wym572@gmail.com</a></p>
+<p>We respond within 30 days.</p>

@@ -1,0 +1,114 @@
+---
+import { LOCALES, CONTACT_EMAIL, PRIVACY_URL, SUPPORT_URL, CHILD_SAFETY_URL, dict, pathFor, type Locale } from '../i18n/locales';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+  localized?: boolean;
+}
+
+const { locale, slug, localized = true } = Astro.props;
+const langSlug = localized ? slug : '';
+const t = dict(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div class="about">
+      <p class="name">TweeTok</p>
+      <p class="muted small">{t.footer.madeBy}</p>
+      <p class="muted small disclaimer">{t.footer.disclaimer}</p>
+    </div>
+
+    <nav aria-label="TweeTok">
+      <ul>
+        <li><a href={pathFor(locale, 'grid-view')}>{t.nav.gridView}</a></li>
+        <li><a href={pathFor(locale, 'apple-tv')}>{t.nav.appleTv}</a></li>
+        <li><a href={pathFor(locale, 'offline')}>{t.nav.offline}</a></li>
+        <li><a href={pathFor(locale, 'android-beta')}>{t.nav.android}</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label={t.nav.support}>
+      <ul>
+        <li><a href={SUPPORT_URL}>{t.nav.support}</a></li>
+        <li><a href={PRIVACY_URL}>{t.nav.privacy}</a></li>
+        <li><a href={CHILD_SAFETY_URL}>{t.nav.childSafety}</a></li>
+        <li><a href={`mailto:${CONTACT_EMAIL}`}>{t.footer.contact}</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label={t.nav.language}>
+      <ul>
+        {
+          LOCALES.map((l) => (
+            <li>
+              <a href={pathFor(l.code, langSlug)} hreflang={l.tag} lang={l.tag} aria-current={l.code === locale ? 'true' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap">
+    <p class="muted small copy">© {year} TweeTok</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--wall-line);
+    padding-block: 56px 32px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  .name {
+    font-weight: 760;
+    font-size: 1.125rem;
+  }
+  .small {
+    font-size: var(--step--1);
+    line-height: 1.6;
+  }
+  .about {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .disclaimer {
+    max-width: 42em;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  nav a {
+    font-size: 0.95rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  nav a:hover,
+  nav a[aria-current] {
+    color: var(--ink);
+  }
+  .copy {
+    margin-top: 40px;
+  }
+  @media (max-width: 800px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .about {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

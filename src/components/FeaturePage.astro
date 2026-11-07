@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import StoreButtons from './StoreButtons.astro';
+import { dict, pathFor, FREE_CACHE_LIMIT, type Locale } from '../i18n/locales';
+import { appJsonLd, breadcrumbJsonLd, fill } from '../lib/seo';
+
+interface Props {
+  locale: Locale;
+  slug: 'grid-view' | 'apple-tv' | 'offline';
+  /** wide visuals (Apple TV) stack above the text instead of beside it */
+  wide?: boolean;
+}
+
+const { locale, slug, wide = false } = Astro.props;
+const t = dict(locale);
+const key = ({ 'grid-view': 'gridView', 'apple-tv': 'appleTv', offline: 'offline' } as const)[slug];
+const page = t.pages[key];
+const values = { limit: FREE_CACHE_LIMIT, price: t.pricing.price };
+const requirement = 'requirement' in page ? fill(page.requirement, values) : undefined;
+
+const others = [
+  { slug: 'grid-view', label: t.nav.gridView },
+  { slug: 'apple-tv', label: t.nav.appleTv },
+  { slug: 'offline', label: t.nav.offline },
+  { slug: 'android-beta', label: t.nav.android },
+].filter((o) => o.slug !== slug);
+---
+
+<Base
+  locale={locale}
+  slug={slug}
+  title={page.title}
+  description={page.description}
+  jsonLd={[appJsonLd(locale), breadcrumbJsonLd(locale, slug, page.h1)]}
+>
+  <section class="feature-head">
+    <div class="wrap">
+      <a class="crumb" href={pathFor(locale)}>TweeTok</a>
+      <h1>{page.h1}</h1>
+      <p class="lead measure">{page.lead}</p>
+    </div>
+  </section>
+
+  <section class:list={['feature-body', { wide }]}>
+    <div class="wrap body-grid">
+      <div class="visual">
+        <slot />
+      </div>
+      <div class="text">
+        {
+          page.sections.map((s) => (
+            <div class="block">
+              <h2>{s.title}</h2>
+              <p class="muted">{s.body}</p>
+            </div>
+          ))
+        }
+        {requirement && <p class="requirement">{requirement}</p>}
+        <StoreButtons locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <nav class="others" aria-label={t.wall.more}>
+    <div class="wrap">
+      <ul>
+        {others.map((o) => <li><a href={pathFor(locale, o.slug)}>{o.label}</a></li>)}
+        <li><a href={`${pathFor(locale)}#pricing`}>{t.nav.pricing}</a></li>
+      </ul>
+    </div>
+  </nav>
+</Base>
+
+<style>
+  .feature-head {
+    padding-block: clamp(40px, 6vw, 88px) clamp(24px, 4vw, 48px);
+  }
+  .feature-head .wrap {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+  .crumb {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .crumb:hover {
+    color: var(--ink);
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--ink-muted);
+  }
+
+  .feature-body {
+    padding-top: clamp(24px, 4vw, 56px);
+  }
+  .body-grid {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: clamp(40px, 7vw, 110px);
+    align-items: start;
+  }
+  .visual {
+    position: sticky;
+    top: 100px;
+    display: grid;
+    justify-items: center;
+  }
+  .wide .body-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .wide .visual {
+    position: static;
+  }
+  .wide .text {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+  }
+  .wide .text > .requirement,
+  .wide .text > :global(.store) {
+    grid-column: 1 / -1;
+  }
+  .text {
+    display: grid;
+    gap: 44px;
+    max-width: 36em;
+  }
+  .wide .text {
+    max-width: none;
+  }
+  .block {
+    display: grid;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 2px solid var(--wall-line);
+  }
+  h2 {
+    font-size: var(--step-1);
+    letter-spacing: -0.015em;
+  }
+  .requirement {
+    background: var(--paper);
+    color: var(--paper-ink);
+    padding: 16px 20px;
+    border-radius: 3px;
+    font-weight: 560;
+  }
+
+  .others {
+    border-top: 1px solid var(--wall-line);
+    padding-block: 40px;
+  }
+  .others ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .others a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 0 18px;
+    border: 1.5px solid var(--wall-line);
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 560;
+  }
+  .others a:hover {
+    border-color: var(--ink-muted);
+  }
+
+  @media (max-width: 860px) {
+    .body-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .visual {
+      position: static;
+    }
+    .wide .text {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

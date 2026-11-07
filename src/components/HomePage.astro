@@ -1,0 +1,532 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PhoneDemo from './PhoneDemo.astro';
+import Phone from './Phone.astro';
+import Placard from './Placard.astro';
+import StoreButtons from './StoreButtons.astro';
+import { dict, pathFor, PRIVACY_URL, FREE_CACHE_LIMIT, type Locale } from '../i18n/locales';
+import { shot, tvShot } from '../lib/shots';
+import { appJsonLd, faqJsonLd, websiteJsonLd, fill } from '../lib/seo';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = dict(locale);
+const w = t.wall;
+const price = t.pricing.price;
+const values = { limit: FREE_CACHE_LIMIT, price };
+
+type Tier = 'free' | 'pro' | 'mixed';
+const tierLabels = (tier: Tier) => (tier === 'free' ? [w.free] : tier === 'pro' ? [w.pro] : [w.free, w.pro]);
+
+const items = [
+  { key: 'feed', img: shot(locale, '2_feed'), tier: 'free' as Tier },
+  { key: 'grid', img: shot(locale, '1_grid'), tier: 'free' as Tier, more: 'grid-view' },
+  { key: 'lists', img: shot(locale, '3_sheet'), tier: 'free' as Tier },
+  { key: 'filter', img: shot(locale, '4_filter'), tier: 'mixed' as Tier },
+  { key: 'cache', img: shot(locale, '5_cache'), tier: 'mixed' as Tier, more: 'offline' },
+] as const;
+---
+
+<Base
+  locale={locale}
+  slug=""
+  title={t.meta.homeTitle}
+  description={t.meta.homeDescription}
+  jsonLd={[websiteJsonLd(locale), appJsonLd(locale), faqJsonLd(t.faq.items)]}
+>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>{t.hero.title}</h1>
+        <p class="lead measure">{t.hero.lead}</p>
+        <StoreButtons locale={locale} />
+      </div>
+      <PhoneDemo locale={locale} />
+    </div>
+  </section>
+
+  <section class="wall" aria-labelledby="wall-title">
+    <div class="wrap">
+      <header class="wall-head">
+        <h2 id="wall-title" class="section-title">{w.title}</h2>
+        <p class="muted measure">{w.intro}</p>
+      </header>
+
+      <ol class="exhibits">
+        {
+          items.map((item, i) => {
+            const copy = w.items[item.key];
+            return (
+              <li class:list={['exhibit', { flip: i % 2 === 1 }]}>
+                <Phone src={item.img} alt={copy.title} />
+                <Placard
+                  title={copy.title}
+                  where={copy.where}
+                  tiers={tierLabels(item.tier)}
+                  more={'more' in item ? { href: pathFor(locale, item.more), label: w.more } : undefined}
+                >
+                  {copy.body}
+                </Placard>
+              </li>
+            );
+          })
+        }
+        <li class="exhibit exhibit-tv">
+          <div class="tv">
+            <Image src={tvShot('grid')} alt={w.items.tv.title} widths={[640, 960, 1280, 1600]} sizes="(max-width: 900px) 92vw, 760px" loading="lazy" />
+          </div>
+          <Placard title={w.items.tv.title} where={w.items.tv.where} tiers={tierLabels('pro')} more={{ href: pathFor(locale, 'apple-tv'), label: w.more }}>
+            {w.items.tv.body}
+          </Placard>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="extras" aria-labelledby="extras-title">
+    <div class="wrap">
+      <h2 id="extras-title" class="section-title">{t.extras.title}</h2>
+      <ul class="extras-grid">
+        {
+          t.extras.items.map((x) => (
+            <li>
+              <h3>{x.title}</h3>
+              <p class="muted">{x.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="privacy" aria-labelledby="privacy-title">
+    <div class="wrap privacy-grid">
+      <h2 id="privacy-title" class="section-title">{t.privacy.title}</h2>
+      <div>
+        <ul class="privacy-list">
+          {t.privacy.items.map((p) => <li>{p}</li>)}
+        </ul>
+        <a class="privacy-link" href={PRIVACY_URL}>{t.privacy.link}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="wrap">
+      <h2 id="pricing-title" class="section-title">{t.pricing.title}</h2>
+      <p class="muted measure pricing-lead">{t.pricing.lead}</p>
+      <table class="compare">
+        <caption class="visually-hidden">{t.pricing.title}</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="feature-col"><span class="visually-hidden">{t.pricing.featureColumn}</span></th>
+            <th scope="col" class="col-free">
+              <span class="tier-name">{t.pricing.freeName}</span>
+              <span class="amount">{t.pricing.freePrice}</span>
+            </th>
+            <th scope="col" class="col-pro">
+              <span class="tier-name">{t.pricing.proName}</span>
+              <span class="amount">{fill(t.pricing.proPrice, values)}</span>
+              <span class="unit">{t.pricing.proPriceUnit}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            t.pricing.rows.map((row) => (
+              <tr>
+                <th scope="row">{fill(row.feature, values)}</th>
+                {[row.free, row.pro].map((cell, i) => (
+                  <td class={i === 0 ? 'col-free' : 'col-pro'}>
+                    {cell === 'yes' ? (
+                      <svg class="check" width="20" height="20" viewBox="0 0 24 24" role="img" aria-label={t.pricing.included} fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m5 12.5 4.5 4.5L19 7.5" />
+                      </svg>
+                    ) : cell === 'no' ? (
+                      <span class="dash" role="img" aria-label={t.pricing.notIncluded} />
+                    ) : (
+                      <span class="cell-text">{fill(cell, values)}</span>
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+      <p class="muted price-note">{t.pricing.priceNote}</p>
+    </div>
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap faq-grid">
+      <h2 id="faq-title" class="section-title">{t.faq.title}</h2>
+      <div class="faq-list">
+        {
+          t.faq.items.map((item) => (
+            <details>
+              <summary>{item.q}</summary>
+              <p class="muted">{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap final-inner">
+      <h2 class="section-title">{t.finalCta.title}</h2>
+      <p class="muted">{t.finalCta.body}</p>
+      <StoreButtons locale={locale} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    padding-block: clamp(32px, 4vw, 56px) clamp(56px, 8vw, 112px);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(40px, 6vw, 88px);
+    align-items: center;
+  }
+  .hero-copy {
+    display: grid;
+    gap: 28px;
+    justify-items: start;
+  }
+  h1 {
+    font-size: var(--step-4);
+    max-width: 12em;
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--ink-muted);
+  }
+
+  /* The wall: screenshots hung with their labels */
+  .wall {
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgb(255 230 240 / 0.05), transparent 70%),
+      var(--wall);
+    border-top: 1px solid var(--wall-line);
+  }
+  .wall-head {
+    display: grid;
+    gap: 14px;
+    margin-bottom: clamp(48px, 7vw, 96px);
+  }
+  .exhibits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: clamp(72px, 10vw, 140px);
+  }
+  .exhibit {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 400px);
+    justify-content: center;
+    align-items: end;
+    gap: clamp(32px, 6vw, 96px);
+  }
+  .exhibit.flip {
+    grid-template-columns: minmax(0, 400px) 300px;
+  }
+  .exhibit.flip > :global(:first-child) {
+    order: 2;
+  }
+  .exhibit :global(.placard) {
+    margin-bottom: 12%;
+  }
+  .exhibit-tv {
+    grid-template-columns: minmax(0, 760px) minmax(0, 360px);
+  }
+  .tv {
+    padding: 10px;
+    background: #0a0809;
+    border-radius: 14px;
+    box-shadow:
+      0 0 0 1.5px #4a3d44,
+      0 40px 80px -30px rgb(0 0 0 / 0.75);
+  }
+  .tv :global(img) {
+    border-radius: 6px;
+    width: 100%;
+  }
+
+  /* Extras */
+  .extras {
+    border-top: 1px solid var(--wall-line);
+  }
+  .extras-grid {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+  }
+  .extras-grid li {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding-top: 18px;
+    border-top: 2px solid var(--wall-line);
+  }
+  .extras-grid h3 {
+    font-size: 1.1875rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* Privacy */
+  .privacy {
+    background: var(--wall-raised);
+  }
+  .privacy-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  .privacy-list {
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 18px;
+  }
+  .privacy-list li {
+    padding-left: 30px;
+    position: relative;
+  }
+  .privacy-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 2px solid var(--rose);
+  }
+  .privacy-link {
+    font-weight: 620;
+  }
+
+  /* Pricing */
+  .pricing-lead {
+    margin-top: 14px;
+  }
+  .compare {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 880px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .compare th,
+  .compare td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--wall-line);
+    vertical-align: middle;
+  }
+  .compare tbody th {
+    text-align: left;
+    font-weight: 500;
+  }
+  .compare .col-free,
+  .compare .col-pro {
+    width: 22%;
+    text-align: center;
+  }
+  .compare thead th {
+    padding-block: 24px 20px;
+    vertical-align: bottom;
+    border-bottom-width: 1.5px;
+  }
+  .tier-name {
+    display: block;
+    font-size: var(--step-0);
+    font-weight: 680;
+  }
+  .amount {
+    display: block;
+    font-size: var(--step-2);
+    font-weight: 760;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .unit {
+    display: block;
+    font-size: var(--step--1);
+    font-weight: 560;
+  }
+  /* The Pro column reads as one paper label running down the table. */
+  .compare .col-pro {
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-bottom-color: rgb(43 34 39 / 0.14);
+  }
+  .compare thead .col-pro {
+    border-radius: 3px 3px 0 0;
+  }
+  .compare tbody tr:last-child .col-pro {
+    border-radius: 0 0 3px 3px;
+    border-bottom-color: transparent;
+  }
+  .compare tbody tr:last-child th,
+  .compare tbody tr:last-child .col-free {
+    border-bottom-color: transparent;
+  }
+  .check {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .col-free .check {
+    color: var(--ink-muted);
+  }
+  .col-pro .check {
+    color: var(--rose-press);
+  }
+  .dash {
+    display: inline-block;
+    width: 14px;
+    height: 2px;
+    vertical-align: middle;
+    background: var(--ink-muted);
+    opacity: 0.45;
+    border-radius: 1px;
+  }
+  .cell-text {
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .price-note {
+    margin-top: 20px;
+    font-size: var(--step--1);
+    max-width: 52em;
+  }
+
+  /* FAQ */
+  .faq {
+    border-top: 1px solid var(--wall-line);
+  }
+  .faq-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: 48px;
+  }
+  .faq-list details {
+    border-bottom: 1px solid var(--wall-line);
+  }
+  .faq-list details:first-child {
+    border-top: 1px solid var(--wall-line);
+  }
+  .faq-list summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 20px 40px 20px 0;
+    font-weight: 620;
+    font-size: 1.1875rem;
+    position: relative;
+  }
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-list summary::after {
+    content: '+';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--ink-muted);
+  }
+  .faq-list details[open] summary::after {
+    content: '−';
+  }
+  .faq-list details p {
+    padding-bottom: 22px;
+    max-width: 40em;
+  }
+
+  /* Final */
+  .final {
+    border-top: 1px solid var(--wall-line);
+    text-align: center;
+  }
+  .final-inner {
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+  }
+  .final-inner :global(.store) {
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid,
+    .privacy-grid,
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-grid {
+      gap: 56px;
+    }
+    .extras-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .exhibit,
+    .exhibit.flip,
+    .exhibit-tv {
+      grid-template-columns: minmax(0, 300px);
+      justify-items: center;
+      gap: 0;
+    }
+    .exhibit-tv {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .exhibit.flip > :global(:first-child) {
+      order: 0;
+    }
+    .exhibit :global(.placard) {
+      margin: -48px 0 0;
+      position: relative;
+      width: calc(100% - 24px);
+    }
+    .exhibit-tv :global(.placard) {
+      margin-top: -24px;
+      max-width: 400px;
+    }
+  }
+  @media (max-width: 560px) {
+    .extras-grid {
+      grid-template-columns: 1fr;
+    }
+    .compare th,
+    .compare td {
+      padding: 12px 8px;
+    }
+    .compare tbody th {
+      font-size: 1rem;
+    }
+    .compare .col-free,
+    .compare .col-pro {
+      width: 27%;
+    }
+    .amount {
+      font-size: var(--step-1);
+    }
+  }
+</style>

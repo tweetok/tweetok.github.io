@@ -1,0 +1,17 @@
+---
+import FeaturePage from '../../components/FeaturePage.astro';
+import Phone from '../../components/Phone.astro';
+import { dict, localePaths, type Locale } from '../../i18n/locales';
+import { shot } from '../../lib/shots';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const t = dict(locale);
+---
+
+<FeaturePage locale={locale} slug="offline">
+  <Phone src={shot(locale, '5_cache')} alt={t.pages.offline.h1} eager />
+</FeaturePage>
