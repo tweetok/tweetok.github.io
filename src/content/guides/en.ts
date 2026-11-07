@@ -10,14 +10,14 @@ export interface GuideSection {
 }
 
 export interface Guide {
-  slug: 'apple-tv' | 'photos-and-videos-only' | 'full-screen-and-grid' | 'save-offline' | 'download-videos';
+  slug: 'apple-tv' | 'photos-and-videos-only' | 'hide-retweets' | 'save-offline' | 'download-videos';
   /** <title> */
   title: string;
   description: string;
   h1: string;
   lead: string;
   /** which screenshot to show beside the article */
-  image: 'tv' | 'filter' | 'grid' | 'cache' | 'feed';
+  image: 'tv' | 'filter' | 'cache' | 'feed';
   imageAlt: string;
   sections: GuideSection[];
 }
@@ -132,42 +132,48 @@ const en: GuidesDict = {
       ],
     },
     {
-      slug: 'full-screen-and-grid',
-      title: 'Browse X (Twitter) like short videos – one post per screen, or a photo grid',
+      slug: 'hide-retweets',
+      title: 'How to hide retweets (reposts) on X (Twitter) – turn them off for every account',
       description:
-        'Swipe through your X timeline one full-screen post at a time, like a short-video app, or switch to a two-column grid to scan dozens of photos at once.',
-      h1: 'Browse X one post per screen, or as a photo grid',
-      lead: 'A normal timeline shows a post, then a reply, then a link card. For photos and video there are two better ways to look: one post filling the screen, or a grid of pictures.',
-      image: 'grid',
-      imageAlt: 'TweeTok two-column grid of paintings on iPhone',
+        'X only lets you turn off reposts one account at a time, and only for new ones. Here is how that works, and how to hide every retweet from your timeline and lists at once.',
+      h1: 'How to hide retweets on X',
+      lead: 'You follow people for what they post, but your timeline fills up with what they repost. Here is how to see only original posts.',
+      image: 'filter',
+      imageAlt: 'TweeTok filter menu with Hide Retweets turned on',
       sections: [
         {
-          h2: 'One post per screen',
+          h2: 'Why hide reposts',
           paragraphs: [
-            'In TweeTok’s full-screen view each post fills the screen, like a short-video app. Swipe up for the next post and down to go back. Videos start when they arrive, multi-image posts swipe sideways, and you can double-tap or pinch to zoom.',
-            'The next posts are loaded ahead of time, so swiping stays smooth even through a long timeline.',
+            'A few accounts that repost a lot can take over a whole timeline. Hiding reposts leaves only what the people you follow wrote or shared themselves, which makes a timeline or a list much shorter and easier to follow.',
           ],
         },
         {
-          h2: 'A two-column grid',
+          h2: 'What X lets you do',
           paragraphs: [
-            'The grid lays out posts in two columns at their own proportions, with the author under each one. It is the fastest way to scan a list of artists or photographers and pick what to look at.',
-            'Tap a card and it grows to full screen from where it sits. Swipe right and it goes back to the same place, so you don’t lose your spot.',
+            'In X’s app you can turn off reposts for one account from that account’s profile: open the menu on their profile and choose Turn off Reposts. You keep following them, but their reposts stop showing up.',
+            'There are two limits. The change applies only to new reposts, not ones already in your timeline, and there is no way to turn off reposts from all accounts at once, so you have to repeat it for every account.',
           ],
         },
         {
-          h2: 'Switch between them',
-          paragraphs: ['Use the button at the top left of the timeline to switch views. The choice works for timelines, lists and profiles.'],
+          h2: 'Hide every retweet at once in TweeTok',
+          paragraphs: ['TweeTok has a single switch that hides all retweets in a timeline or list, including the ones already there. It is free.'],
           steps: [
-            'Open a timeline, list or profile.',
-            'Tap the view button at the top left to switch to the grid.',
-            'Tap a card to open it full screen; swipe right to go back to the grid.',
+            'Open the timeline or list you want to clean up.',
+            'Tap the filter button next to the timeline name at the top.',
+            'Turn on Hide Retweets. Reposts disappear right away, old and new.',
+            'To see them again, turn the switch off.',
           ],
         },
         {
-          h2: 'On Apple TV and Android',
+          h2: 'On profiles, Apple TV and Android',
           paragraphs: [
-            'On Apple TV the grid becomes four columns sized for the big screen, and you move around it with the Siri Remote. The Android app has the same full-screen view and grid.',
+            'The same filter is in the menu on anyone’s profile, so you can look at one account’s own posts without their reposts. It works the same way on Apple TV and in the Android app. If you also turn on Hide Text-Only Tweets, the timeline is left with original photos and videos only.',
+          ],
+        },
+        {
+          h2: 'Does this change my X account?',
+          paragraphs: [
+            'No. The filter only changes what TweeTok shows you. Nothing is changed on X: you keep following everyone, and nobody is notified.',
           ],
         },
       ],

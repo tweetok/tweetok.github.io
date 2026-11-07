@@ -29,8 +29,6 @@ export function guideImage(locale: Locale, image: Guide['image']): { src: ImageM
       return { src: tvShot('grid'), wide: true };
     case 'filter':
       return { src: shot(locale, '4_filter'), wide: false };
-    case 'grid':
-      return { src: shot(locale, '1_grid'), wide: false };
     case 'cache':
       return { src: shot(locale, '5_cache'), wide: false };
     case 'feed':
