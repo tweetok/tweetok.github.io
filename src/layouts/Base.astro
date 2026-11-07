@@ -68,5 +68,9 @@ const ogImage = new URL(info.og, SITE).href;
       <slot />
     </main>
     <Footer locale={locale} slug={slug} localized={localized} />
+    <script>
+      import { initAnalytics } from '../lib/analytics';
+      initAnalytics();
+    </script>
   </body>
 </html>

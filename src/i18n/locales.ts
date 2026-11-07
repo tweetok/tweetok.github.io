@@ -35,6 +35,24 @@ const DICTS: Record<Locale, Dict> = { en, ja, ko, 'zh-hant': zhHant, 'zh-hans': 
 export const SITE = 'https://tweetok.github.io';
 export const APP_STORE_URL = 'https://apps.apple.com/app/id6755531352';
 export const APP_STORE_ID = '6755531352';
+/**
+ * App Store Connect campaign provider token (App Analytics > Acquisition > Campaigns > Generate campaign link, the `pt=` value).
+ * Empty means App Store links are sent without campaign parameters.
+ */
+export const APP_STORE_PROVIDER_TOKEN = '';
+
+/**
+ * App Store link tagged with a campaign token (`ct`, max 40 characters), so App Store Connect can show
+ * product page views and downloads per website page.
+ */
+export function appStoreLink(campaign: string): string {
+  if (!APP_STORE_PROVIDER_TOKEN) return APP_STORE_URL;
+  const url = new URL(`https://apps.apple.com/app/apple-store/id${APP_STORE_ID}`);
+  url.searchParams.set('pt', APP_STORE_PROVIDER_TOKEN);
+  url.searchParams.set('ct', campaign.slice(0, 40));
+  url.searchParams.set('mt', '8');
+  return url.href;
+}
 export const ANDROID_GROUP_URL = 'https://groups.google.com/g/tweetok-testers';
 export const ANDROID_OPTIN_URL = 'https://play.google.com/apps/testing/com.tada.tweetok';
 export const ANDROID_STORE_URL = 'https://play.google.com/store/apps/details?id=com.tada.tweetok';
