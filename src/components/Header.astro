@@ -26,7 +26,7 @@ const links = [
 <header class="site-header">
   <div class="wrap bar">
     <a class="brand" href={home}>
-      <Image src={icon} alt="" width={36} height={36} class="brand-icon" loading="eager" />
+      <Image src={icon} alt="" width={36} height={36} densities={[1, 2, 3]} class="brand-icon" loading="eager" />
       <span>TweeTok</span>
     </a>
 
@@ -119,7 +119,8 @@ const links = [
     margin-right: auto;
   }
   .brand :global(.brand-icon) {
-    border-radius: 9px;
+    /* the exported icon already has the iOS rounded shape */
+    flex: none;
   }
   ul {
     list-style: none;
