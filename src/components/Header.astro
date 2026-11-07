@@ -1,0 +1,234 @@
+---
+import { Image } from 'astro:assets';
+import icon from '../assets/icon.png';
+import { LOCALES, dict, localeInfo, pathFor, type Locale } from '../i18n/locales';
+
+interface Props {
+  locale: Locale;
+  slug: string;
+  localized?: boolean;
+}
+
+const { locale, slug, localized = true } = Astro.props;
+const langSlug = localized ? slug : '';
+const t = dict(locale);
+const home = pathFor(locale);
+const links = [
+  { href: pathFor(locale, 'grid-view'), label: t.nav.gridView, slug: 'grid-view' },
+  { href: pathFor(locale, 'apple-tv'), label: t.nav.appleTv, slug: 'apple-tv' },
+  { href: pathFor(locale, 'offline'), label: t.nav.offline, slug: 'offline' },
+  { href: pathFor(locale, 'android-beta'), label: t.nav.android, slug: 'android-beta' },
+  { href: `${home}#pricing`, label: t.nav.pricing, slug: '#pricing' },
+];
+---
+
+<a class="skip-link" href="#main">{t.nav.skip}</a>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={home}>
+      <Image src={icon} alt="" width={36} height={36} class="brand-icon" loading="eager" />
+      <span>TweeTok</span>
+    </a>
+
+    <nav class="nav" aria-label={t.nav.menu}>
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={l.slug === slug ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <details class="lang">
+      <summary>
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z"></path>
+        </svg>
+        <span>{localeInfo(locale).label}</span>
+        <span class="visually-hidden">{t.nav.language}</span>
+      </summary>
+      <ul>
+        {
+          LOCALES.map((l) => (
+            <li>
+              <a
+                href={pathFor(l.code, langSlug)}
+                hreflang={l.tag}
+                lang={l.tag}
+                aria-current={l.code === locale ? 'true' : undefined}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+
+    <details class="menu">
+      <summary aria-label={t.nav.menu}>
+        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </summary>
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={l.slug === slug ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--wall) 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--wall-line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 68px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 760;
+    font-size: 1.125rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .brand :global(.brand-icon) {
+    border-radius: 9px;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav ul {
+    display: flex;
+    gap: 4px;
+  }
+  .nav a,
+  .lang summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 560;
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  .nav a:hover,
+  .lang summary:hover {
+    color: var(--ink);
+    background: var(--wall-raised);
+  }
+  .nav a[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  details {
+    position: relative;
+  }
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  details > ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 180px;
+    padding: 6px;
+    background: var(--wall-raised);
+    border: 1px solid var(--wall-line);
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgb(0 0 0 / 0.45);
+  }
+  details > ul a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 9px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  details > ul a:hover {
+    background: var(--wall-line);
+  }
+  details > ul a[aria-current] {
+    color: var(--rose);
+  }
+
+  .menu {
+    display: none;
+  }
+  .menu summary {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+  }
+  .menu summary:hover {
+    background: var(--wall-raised);
+  }
+
+  @media (max-width: 960px) {
+    .nav {
+      display: none;
+    }
+    .menu {
+      display: block;
+    }
+    .bar {
+      gap: 8px;
+    }
+  }
+</style>
+
+<script>
+  // Close an open menu when clicking elsewhere or pressing Escape.
+  const menus = document.querySelectorAll<HTMLDetailsElement>('.site-header details');
+  document.addEventListener('click', (e) => {
+    menus.forEach((d) => {
+      if (d.open && !d.contains(e.target as Node)) d.open = false;
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    menus.forEach((d) => {
+      if (d.open) {
+        d.open = false;
+        d.querySelector('summary')?.focus();
+      }
+    });
+  });
+</script>

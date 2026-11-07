@@ -1,0 +1,151 @@
+@import '@fontsource-variable/schibsted-grotesk';
+
+/* Gallery wall: a warm aubergine dark, museum-label paper, and the app icon's rose for actions only. */
+:root {
+  color-scheme: dark;
+  --wall: #1d151a;
+  --wall-raised: #271d23;
+  --wall-line: #3a2d35;
+  --ink: #f5eff2;
+  --ink-muted: #b8aab2;
+  --paper: #eee7de;
+  --paper-ink: #2b2227;
+  --paper-muted: #6f6168;
+  --rose: #ff4f7b;
+  --rose-press: #e63c68;
+  --on-rose: #2a0711;
+
+  --font: 'Schibsted Grotesk Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+  /* 1.333 scale from an 18px body */
+  --step--1: 0.875rem;
+  --step-0: 1.125rem;
+  --step-1: 1.5rem;
+  --step-2: 2rem;
+  --step-3: clamp(2.25rem, 1.6rem + 2.4vw, 2.67rem);
+  --step-4: clamp(2.6rem, 1.4rem + 4.6vw, 4.75rem);
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1200px;
+  --radius-sm: 6px;
+  --radius-lg: 28px;
+}
+
+:lang(ja) { --font: 'Schibsted Grotesk Variable', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', Meiryo, sans-serif; }
+:lang(ko) { --font: 'Schibsted Grotesk Variable', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif; }
+:lang(zh-Hant) { --font: 'Schibsted Grotesk Variable', 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
+:lang(zh-Hans) { --font: 'Schibsted Grotesk Variable', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--wall);
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  background: var(--wall);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+:lang(ja), :lang(ko), :lang(zh-Hant), :lang(zh-Hans) { line-height: 1.75; }
+
+img { display: block; max-width: 100%; height: auto; }
+
+h1, h2, h3 {
+  margin: 0;
+  font-weight: 760;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+:lang(ja) :is(h1, h2, h3), :lang(ko) :is(h1, h2, h3), :lang(zh-Hant) :is(h1, h2, h3), :lang(zh-Hans) :is(h1, h2, h3) {
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+p { margin: 0; text-wrap: pretty; }
+
+a { color: inherit; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--rose);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.measure { max-width: 34em; }
+:lang(ja) .measure, :lang(ko) .measure, :lang(zh-Hant) .measure, :lang(zh-Hans) .measure { max-width: 30em; }
+
+.muted { color: var(--ink-muted); }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px; top: -48px;
+  z-index: 100;
+  padding: 10px 14px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  border-radius: var(--radius-sm);
+}
+.skip-link:focus { top: 12px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.btn svg { flex: none; }
+.btn-primary { background: var(--rose); color: var(--on-rose); }
+.btn-primary:hover { background: var(--rose-press); text-decoration: none; }
+.btn-secondary { border-color: var(--wall-line); color: var(--ink); background: transparent; }
+.btn-secondary:hover { border-color: var(--ink-muted); text-decoration: none; }
+
+section { padding-block: clamp(64px, 9vw, 128px); }
+
+.section-title { font-size: var(--step-3); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Break Japanese headings at phrase boundaries instead of mid-word (Chromium; others fall back to normal). */
+:lang(ja) :is(h1, h2, h3) { word-break: auto-phrase; }

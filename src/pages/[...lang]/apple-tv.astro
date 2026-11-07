@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import FeaturePage from '../../components/FeaturePage.astro';
+import { dict, localePaths, type Locale } from '../../i18n/locales';
+import { tvShot } from '../../lib/shots';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const t = dict(locale);
+---
+
+<FeaturePage locale={locale} slug="apple-tv" wide>
+  <div class="tv-wall">
+    <div class="tv">
+      <Image src={tvShot('grid')} alt={t.pages.appleTv.h1} widths={[640, 960, 1280, 1920]} sizes="(max-width: 1240px) 92vw, 1100px" loading="eager" fetchpriority="high" />
+    </div>
+    <div class="tv">
+      <Image src={tvShot('feed')} alt="" widths={[640, 960, 1280, 1920]} sizes="(max-width: 1240px) 92vw, 1100px" />
+    </div>
+  </div>
+</FeaturePage>
+
+<style>
+  .tv-wall {
+    width: 100%;
+    display: grid;
+    gap: 32px;
+  }
+  .tv {
+    padding: 10px;
+    background: #0a0809;
+    border-radius: 14px;
+    box-shadow:
+      0 0 0 1.5px #4a3d44,
+      0 40px 80px -30px rgb(0 0 0 / 0.75);
+  }
+  .tv :global(img) {
+    width: 100%;
+    border-radius: 6px;
+  }
+</style>

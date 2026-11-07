@@ -1,0 +1,255 @@
+---
+// Privacy policy, support and child safety pages, moved from wym572.github.io.
+// The text lives in src/content/legal/<page>.{zh,en}.html and is kept word for word;
+// only the site chrome and styling are new. Chinese and English switch in the page.
+import Base from '../layouts/Base.astro';
+import meta from '../content/legal/meta.json';
+
+import privacyZh from '../content/legal/privacy.zh.html?raw';
+import privacyEn from '../content/legal/privacy.en.html?raw';
+import supportZh from '../content/legal/support.zh.html?raw';
+import supportEn from '../content/legal/support.en.html?raw';
+import childZh from '../content/legal/child-safety.zh.html?raw';
+import childEn from '../content/legal/child-safety.en.html?raw';
+
+type Page = 'privacy' | 'support' | 'child-safety';
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+const info = meta[page];
+const body = {
+  privacy: { zh: privacyZh, en: privacyEn },
+  support: { zh: supportZh, en: supportEn },
+  'child-safety': { zh: childZh, en: childEn },
+}[page];
+
+const descriptions: Record<Page, string> = {
+  privacy:
+    'How TweeTok handles your data: X credentials stay on your device, what usage analytics includes, optional cloud sync with your own server, permissions and your rights.',
+  support:
+    'Help with TweeTok: signing in, empty timelines, video playback, Apple TV pairing, clearing data, TweeTok Pro purchases, cloud sync and how to contact us.',
+  'child-safety':
+    'TweeTok’s standards against child sexual abuse and exploitation (CSAE), how to report content, and what we do with reports.',
+};
+
+const [enName, enDate] = info.en;
+const [zhName, zhDate] = info.zh;
+---
+
+<Base locale="en" slug={page} title={`${enName} | TweeTok`} description={descriptions[page]} localized={false}>
+  <article class="legal" data-page={page}>
+    <div class="wrap legal-wrap">
+      <header class="legal-head">
+        <div>
+          <h1>
+            <span lang="en" class="on">{enName}</span>
+            <span lang="zh-Hans">{zhName}</span>
+          </h1>
+          {
+            enDate && (
+              <p class="date">
+                <span lang="en" class="on">{enDate}</span>
+                <span lang="zh-Hans">{zhDate}</span>
+              </p>
+            )
+          }
+        </div>
+        <div class="langs" role="group" aria-label="Language / 语言">
+          <button type="button" data-lang="en" aria-pressed="true">English</button>
+          <button type="button" data-lang="zh-Hans" aria-pressed="false">中文</button>
+        </div>
+      </header>
+
+      <section lang="en" class="on prose" set:html={body.en} />
+      <section lang="zh-Hans" class="prose" set:html={body.zh} />
+
+      <p class="updated">
+        <span lang="en" class="on">{info.footer.en}</span>
+        <span lang="zh-Hans">{info.footer.zh}</span>
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .legal {
+    padding-block: clamp(32px, 5vw, 72px) clamp(56px, 8vw, 96px);
+  }
+  .legal-wrap {
+    max-width: calc(760px + 2 * var(--gutter));
+  }
+  .legal [lang]:not(.on):is(span, section) {
+    display: none;
+  }
+  .legal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--wall-line);
+  }
+  h1 {
+    font-size: var(--step-3);
+  }
+  .date {
+    margin-top: 8px;
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+  }
+  .langs {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1.5px solid var(--wall-line);
+    border-radius: 999px;
+  }
+  .langs button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--ink-muted);
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    min-height: 36px;
+    padding: 0 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .langs button[aria-pressed='true'] {
+    background: var(--paper);
+    color: var(--paper-ink);
+  }
+
+  /* Imported page text */
+  .prose {
+    font-size: 1.0625rem;
+    padding-block: 0;
+  }
+  .prose :global(> :first-child) {
+    margin-top: 0;
+  }
+  .prose :global(h2) {
+    font-size: var(--step-1);
+    margin: 48px 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .prose :global(h3) {
+    font-size: 1.125rem;
+    margin: 30px 0 10px;
+    letter-spacing: 0;
+  }
+  .prose :global(p),
+  .prose :global(li) {
+    color: var(--ink);
+  }
+  .prose :global(p + p) {
+    margin-top: 12px;
+  }
+  .prose :global(ul) {
+    padding-left: 22px;
+    margin: 12px 0;
+  }
+  .prose :global(li) {
+    margin: 8px 0;
+  }
+  .prose :global(li::marker) {
+    color: var(--ink-muted);
+  }
+  .prose :global(a) {
+    color: var(--ink);
+    text-decoration-color: var(--rose);
+  }
+  .prose :global(strong) {
+    font-weight: 680;
+  }
+  .prose :global(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85em;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--wall-raised);
+    border: 1px solid var(--wall-line);
+  }
+  .prose :global(.note) {
+    margin: 24px 0;
+    padding: 16px 20px;
+    border-radius: 3px;
+    background: var(--paper);
+    color: var(--paper-ink);
+  }
+  .prose :global(.note p),
+  .prose :global(.note a) {
+    color: var(--paper-ink);
+  }
+  .prose :global(.tablewrap) {
+    margin: 18px 0;
+    overflow-x: auto;
+    border: 1px solid var(--wall-line);
+    border-radius: 3px;
+  }
+  .prose :global(table) {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    text-align: left;
+    vertical-align: top;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--wall-line);
+  }
+  .prose :global(th) {
+    background: var(--wall-raised);
+    font-weight: 650;
+  }
+  .prose :global(tr:last-child td) {
+    border-bottom: 0;
+  }
+  .updated {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--wall-line);
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+  }
+</style>
+
+<script>
+  // Language: ?lang=zh|en in the URL wins, then the visitor's last choice, then the browser language.
+  const root = document.querySelector<HTMLElement>('.legal');
+  if (root) {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('.langs button');
+    const key = 'tweetok-legal-lang';
+    const set = (lang: 'en' | 'zh-Hans', remember: boolean) => {
+      document.documentElement.lang = lang;
+      root.querySelectorAll<HTMLElement>('span[lang], section[lang]').forEach((el) => {
+        el.classList.toggle('on', el.getAttribute('lang') === lang);
+      });
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+      if (remember) {
+        try {
+          localStorage.setItem(key, lang);
+        } catch {}
+      }
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.lang as 'en' | 'zh-Hans', true)));
+
+    const param = new URLSearchParams(location.search).get('lang')?.toLowerCase();
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(key);
+    } catch {}
+    const fromParam = param?.startsWith('zh') ? 'zh-Hans' : param === 'en' ? 'en' : null;
+    const fromBrowser = (navigator.language || '').toLowerCase().startsWith('zh') ? 'zh-Hans' : 'en';
+    set((fromParam ?? saved ?? fromBrowser) as 'en' | 'zh-Hans', false);
+  }
+</script>

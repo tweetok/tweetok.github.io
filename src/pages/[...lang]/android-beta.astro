@@ -1,0 +1,160 @@
+---
+import Base from '../../layouts/Base.astro';
+import Phone from '../../components/Phone.astro';
+import { ANDROID_GROUP_URL, ANDROID_OPTIN_URL, ANDROID_STORE_URL, dict, localePaths, type Locale } from '../../i18n/locales';
+import { shot } from '../../lib/shots';
+import { breadcrumbJsonLd } from '../../lib/seo';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const t = dict(locale);
+const page = t.pages.androidBeta;
+const urls = [ANDROID_GROUP_URL, ANDROID_OPTIN_URL, ANDROID_STORE_URL];
+---
+
+<Base locale={locale} slug="android-beta" title={page.title} description={page.description} jsonLd={[breadcrumbJsonLd(locale, 'android-beta', page.h1)]}>
+  <section class="head">
+    <div class="wrap head-grid">
+      <div class="copy">
+        <h1>{page.h1}</h1>
+        <p class="lead measure">{page.lead}</p>
+        <div class="free">
+          <h2>{page.freeTitle}</h2>
+          <ul>{page.freeItems.map((x) => <li>{x}</li>)}</ul>
+        </div>
+      </div>
+      <Phone src={shot(locale, '1_grid')} alt={page.h1} eager />
+    </div>
+  </section>
+
+  <section class="steps-section" aria-labelledby="steps-title">
+    <div class="wrap">
+      <h2 id="steps-title" class="section-title">{page.stepsTitle}</h2>
+      <ol class="steps">
+        {
+          page.steps.map((step, i) => (
+            <li>
+              <span class="num" aria-hidden="true">{i + 1}</span>
+              <h3>{step.title}</h3>
+              <p class="muted">{step.body}</p>
+              <a class="btn btn-secondary" href={urls[i]} rel="noopener">
+                {step.action}
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="note">{page.sameAccount}</p>
+      <p class="muted small">{page.requirements}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(40px, 6vw, 88px);
+  }
+  .head-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: clamp(40px, 7vw, 110px);
+    align-items: center;
+  }
+  .copy {
+    display: grid;
+    gap: 24px;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--ink-muted);
+  }
+  .free {
+    background: var(--paper);
+    color: var(--paper-ink);
+    padding: 22px 26px;
+    border-radius: 3px;
+    max-width: 420px;
+    display: grid;
+    gap: 12px;
+  }
+  .free h2 {
+    font-size: 1.1875rem;
+  }
+  .free ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .free li {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid rgb(43 34 39 / 0.35);
+  }
+
+  .steps-section {
+    border-top: 1px solid var(--wall-line);
+  }
+  .steps {
+    list-style: none;
+    margin: 40px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+  .steps li {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 12px;
+    padding: 26px;
+    border: 1.5px solid var(--wall-line);
+    border-radius: 3px;
+    justify-items: start;
+  }
+  .num {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: var(--rose);
+    color: var(--on-rose);
+    font-weight: 760;
+    font-size: 1.125rem;
+  }
+  .steps h3 {
+    font-size: var(--step-1);
+  }
+  .steps .btn {
+    margin-top: 8px;
+  }
+  .note {
+    margin-top: 32px;
+    font-weight: 600;
+  }
+  .small {
+    margin-top: 8px;
+    font-size: var(--step--1);
+  }
+  @media (max-width: 860px) {
+    .head-grid,
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .head-grid :global(.phone) {
+      max-width: 260px;
+      justify-self: center;
+    }
+  }
+</style>
