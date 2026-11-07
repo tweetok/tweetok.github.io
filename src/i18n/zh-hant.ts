@@ -14,6 +14,7 @@ const zhHant: Dict = {
     offline: '離線快取',
     android: 'Android 測試版',
     pricing: '價格',
+    guides: '使用指南',
     faq: '常見問題',
     support: '支援',
     privacy: '隱私權',
@@ -63,7 +64,7 @@ const zhHant: Dict = {
       filter: {
         title: '過濾',
         body: '隱藏純文字推文和轉推，讓動態只剩圖片和影片。Pro 還能隱藏已讀推文，並為每條時間軸分別記住過濾設定。',
-        where: 'iPhone、iPad、Android',
+        where: 'iPhone、iPad、Apple TV、Android',
       },
       cache: {
         title: '離線快取',

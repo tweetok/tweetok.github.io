@@ -14,6 +14,7 @@ const zhHans: Dict = {
     offline: '离线缓存',
     android: 'Android 内测',
     pricing: '价格',
+    guides: '使用指南',
     faq: '常见问题',
     support: '支持',
     privacy: '隐私',
@@ -62,7 +63,7 @@ const zhHans: Dict = {
       filter: {
         title: '过滤',
         body: '隐藏纯文字推文和转推，只留下图片和视频。Pro 还能隐藏已读推文，并为每条时间线单独记住过滤设置。',
-        where: 'iPhone、iPad、Android',
+        where: 'iPhone、iPad、Apple TV、Android',
       },
       cache: {
         title: '离线缓存',

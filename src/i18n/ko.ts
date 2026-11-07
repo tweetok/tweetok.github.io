@@ -14,6 +14,7 @@ const ko: Dict = {
     offline: '오프라인 캐시',
     android: 'Android 베타',
     pricing: '가격',
+    guides: '가이드',
     faq: '자주 묻는 질문',
     support: '지원',
     privacy: '개인정보 처리방침',
@@ -63,7 +64,7 @@ const ko: Dict = {
       filter: {
         title: '필터',
         body: '텍스트만 있는 게시물과 재게시를 숨겨 피드를 사진과 동영상으로만 채울 수 있습니다. Pro에서는 이미 본 게시물도 숨기고, 타임라인별로 필터를 기억합니다.',
-        where: 'iPhone, iPad, Android',
+        where: 'iPhone, iPad, Apple TV, Android',
       },
       cache: {
         title: '오프라인 캐시',

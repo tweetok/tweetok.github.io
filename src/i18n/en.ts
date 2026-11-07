@@ -15,6 +15,7 @@ const en = {
     offline: 'Offline cache',
     android: 'Android beta',
     pricing: 'Pricing',
+    guides: 'Guides',
     faq: 'FAQ',
     support: 'Support',
     privacy: 'Privacy',
@@ -64,7 +65,7 @@ const en = {
       filter: {
         title: 'Filters',
         body: 'Hide text-only posts and reposts so the feed is all pictures and video. Pro also hides posts you’ve already seen and remembers filters for each timeline.',
-        where: 'iPhone, iPad, Android',
+        where: 'iPhone, iPad, Apple TV, Android',
       },
       cache: {
         title: 'Offline cache',
