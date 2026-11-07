@@ -18,6 +18,7 @@ const links = [
   { href: pathFor(locale, 'apple-tv'), label: t.nav.appleTv, slug: 'apple-tv' },
   { href: pathFor(locale, 'offline'), label: t.nav.offline, slug: 'offline' },
   { href: pathFor(locale, 'android-beta'), label: t.nav.android, slug: 'android-beta' },
+  { href: pathFor(locale, 'guides'), label: t.nav.guides, slug: 'guides' },
   { href: `${home}#pricing`, label: t.nav.pricing, slug: '#pricing' },
 ];
 ---
@@ -35,7 +36,7 @@ const links = [
         {
           links.map((l) => (
             <li>
-              <a href={l.href} aria-current={l.slug === slug ? 'page' : undefined}>
+              <a href={l.href} aria-current={l.slug === slug || slug.startsWith(`${l.slug}/`) ? 'page' : undefined}>
                 {l.label}
               </a>
             </li>
@@ -81,7 +82,7 @@ const links = [
         {
           links.map((l) => (
             <li>
-              <a href={l.href} aria-current={l.slug === slug ? 'page' : undefined}>
+              <a href={l.href} aria-current={l.slug === slug || slug.startsWith(`${l.slug}/`) ? 'page' : undefined}>
                 {l.label}
               </a>
             </li>

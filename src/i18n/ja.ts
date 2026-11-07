@@ -14,6 +14,7 @@ const ja: Dict = {
     offline: 'オフラインキャッシュ',
     android: 'Android ベータ版',
     pricing: '料金',
+    guides: '使い方ガイド',
     faq: 'よくある質問',
     support: 'サポート',
     privacy: 'プライバシー',
@@ -63,7 +64,7 @@ const ja: Dict = {
       filter: {
         title: 'フィルタ',
         body: 'テキストのみの投稿やリポストを非表示にして、写真と動画だけのフィードにできます。Pro では既読の投稿の非表示や、タイムラインごとのフィルタの記憶にも対応します。',
-        where: 'iPhone、iPad、Android',
+        where: 'iPhone、iPad、Apple TV、Android',
       },
       cache: {
         title: 'オフラインキャッシュ',

@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import { dict, localePaths, localeInfo, pathFor, SITE, type Locale } from '../../../i18n/locales';
+import { guides, guideImage } from '../../../content/guides';
+import { breadcrumbJsonLd } from '../../../lib/seo';
+
+export function getStaticPaths() {
+  return localePaths();
+}
+
+const { locale } = Astro.props as { locale: Locale };
+const t = dict(locale);
+const g = guides(locale);
+
+const listJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  inLanguage: localeInfo(locale).tag,
+  itemListElement: g.guides.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.h1,
+    url: new URL(pathFor(locale, `guides/${item.slug}`), SITE).href,
+  })),
+};
+---
+
+<Base locale={locale} slug="guides" title={g.indexTitle} description={g.indexDescription} jsonLd={[breadcrumbJsonLd(locale, 'guides', g.indexH1), listJsonLd]}>
+  <section class="head">
+    <div class="wrap">
+      <a class="crumb" href={pathFor(locale)}>TweeTok</a>
+      <h1>{g.indexH1}</h1>
+      <p class="lead measure">{g.indexLead}</p>
+    </div>
+  </section>
+
+  <section class="list-section">
+    <div class="wrap">
+      <ul class="list">
+        {
+          g.guides.map((item) => {
+            const img = guideImage(locale, item.image);
+            return (
+              <li>
+                <a class="card" href={pathFor(locale, `guides/${item.slug}`)}>
+                  <div class:list={['thumb', { wide: img.wide }]}>
+                    <Image src={img.src} alt="" widths={[320, 480, 720]} sizes="(max-width: 700px) 40vw, 240px" />
+                  </div>
+                  <div class="text">
+                    <h2>{item.h1}</h2>
+                    <p class="muted">{item.description}</p>
+                    <span class="more">{g.readGuide}</span>
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(40px, 6vw, 88px) clamp(16px, 3vw, 32px);
+  }
+  .head .wrap {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+  .crumb {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  .lead {
+    font-size: 1.25rem;
+    color: var(--ink-muted);
+  }
+  .list-section {
+    padding-top: clamp(24px, 4vw, 48px);
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+    max-width: 920px;
+  }
+  .card {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    padding: 20px;
+    border: 1.5px solid var(--wall-line);
+    border-radius: 3px;
+    text-decoration: none;
+  }
+  .card:hover {
+    border-color: var(--ink-muted);
+  }
+  .card:hover h2 {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.15em;
+  }
+  .thumb {
+    height: 150px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #000;
+  }
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .thumb.wide :global(img) {
+    object-position: center;
+  }
+  .text {
+    display: grid;
+    gap: 10px;
+  }
+  h2 {
+    font-size: var(--step-1);
+    letter-spacing: -0.015em;
+  }
+  .text p {
+    font-size: 1rem;
+  }
+  .more {
+    font-size: 0.9375rem;
+    font-weight: 620;
+    color: var(--ink);
+  }
+  @media (max-width: 640px) {
+    .card {
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 16px;
+      padding: 14px;
+      align-items: start;
+    }
+    .thumb {
+      height: 120px;
+    }
+  }
+</style>
